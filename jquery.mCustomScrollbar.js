@@ -749,21 +749,24 @@ and dependencies (minified).
 							scrollbar=$(".mCSB_"+d.idx+"_scrollbar");
 					
 						if(o.live){removeLiveTimers(o.liveSelector || $(selector).selector);} /* remove live timers */
-						
-						_autoUpdate.call(this,"remove"); /* remove automatic updating */
-						
-						_unbindEvents.call(this); /* unbind events */
-						
-						_resetContentPosition.call(this); /* reset content position */
+
+                        if (mCustomScrollBox.length) {
+                            _autoUpdate.call(this,"remove"); /* remove automatic updating */
+
+                            _unbindEvents.call(this); /* unbind events */
+
+                            _resetContentPosition.call(this); /* reset content position */
+
+                            /* remove plugin markup */
+                            scrollbar.remove(); /* remove scrollbar(s) first (those can be either inside or outside plugin's inner wrapper) */
+                            mCSB_container.find("img."+classes[2]).removeClass(classes[2]); /* remove loaded images flag */
+                            mCustomScrollBox.replaceWith(mCSB_container.contents()); /* replace plugin's inner wrapper with the original content */
+                        }
 						
 						$this.removeData(pluginPfx); /* remove plugin data object */
 						
 						_delete(this,"mcs"); /* delete callbacks object */
-						
-						/* remove plugin markup */
-						scrollbar.remove(); /* remove scrollbar(s) first (those can be either inside or outside plugin's inner wrapper) */
-						mCSB_container.find("img."+classes[2]).removeClass(classes[2]); /* remove loaded images flag */
-						mCustomScrollBox.replaceWith(mCSB_container.contents()); /* replace plugin's inner wrapper with the original content */
+
 						/* remove plugin classes from the element and add destroy class */
 						$this.removeClass(pluginNS+" _"+pluginPfx+"_"+d.idx+" "+classes[6]+" "+classes[7]+" "+classes[5]+" "+classes[3]).addClass(classes[4]);
 					
